@@ -1,0 +1,31 @@
+version: 0.2
+
+env:
+  variables:
+    NODE_ENV: "${env}"
+
+phases:
+  install:
+    runtime-versions:
+      nodejs: 12
+    commands:
+      - terraform init
+      - terraform plan
+      - terraform apply
+  pre_build:
+    commands:
+      - terraform init
+      - terraform plan
+  build:
+    commands:
+      - terraform apply
+
+artifacts:
+  files:
+    - "**/*"
+  name: "web-nginx-terraform-${env}"
+  base-directory: build
+
+cache:
+  paths:
+    - /root/**/*
